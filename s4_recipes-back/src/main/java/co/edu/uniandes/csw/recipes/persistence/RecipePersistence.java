@@ -31,6 +31,30 @@ public class RecipePersistence {
         return em.find(RecipeEntity.class, id);
     }
     
+    
     //TODO método crear de recipe
-
+    
+    public RecipeEntity createRecipe(RecipeEntity recipeEntity) {
+        LOGGER.log(Level.INFO, "Creando una receta nueva");
+        em.persist(recipeEntity);
+        LOGGER.log(Level.INFO, "Receta creada");
+        return recipeEntity;
+    }
+    
+     public RecipeEntity findByName(String name) {
+        LOGGER.log(Level.INFO, "Consultando recetas por el nombre ", name);
+        TypedQuery query = em.createQuery("Select e From RecipeEntity e where e.name = :name", RecipeEntity.class);
+        query = query.setParameter("name", name);
+        List<RecipeEntity> mismoNombre = query.getResultList();
+        RecipeEntity result;
+        if (mismoNombre == null) {
+            result = null;
+        } else if (mismoNombre.isEmpty()) {
+            result = null;
+        } else {
+            result = mismoNombre.get(0);
+        }
+        LOGGER.log(Level.INFO, "Saliendo de consultar recetas por el nombre ", name);
+        return result;
+    }
 }
