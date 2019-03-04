@@ -50,6 +50,9 @@ public class RecipeLogic {
         if (recipeEntity.getDescription().length()>150) {
             throw new BusinessLogicException("La descripcion de la receta no puede superar los 150 caracteres");
         }
+        if (recipeEntity.getIngredientes().size()<1) {
+            throw new BusinessLogicException("La receta debe tener 1 ingrediente al menos");
+        }
         RecipeEntity newRecipeEntity = persistence.createRecipe(recipeEntity);
         LOGGER.log(Level.INFO, "Termina proceso de creación de la receta");
         return newRecipeEntity;

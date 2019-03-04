@@ -23,6 +23,7 @@ SOFTWARE.
  */
 package co.edu.uniandes.csw.recipes.test.logic;
 import co.edu.uniandes.csw.recipes.ejb.RecipeLogic;
+import co.edu.uniandes.csw.recipes.entities.IngredienteEntity;
 import co.edu.uniandes.csw.recipes.entities.RecipeEntity;
 import co.edu.uniandes.csw.recipes.persistence.RecipePersistence;
 
@@ -63,6 +64,7 @@ public class RecipeLogicTest {
     private UserTransaction utx;
 
     private List<RecipeEntity> data = new ArrayList<RecipeEntity>();
+    private List<IngredienteEntity> ingData = new ArrayList();
 
     
     @Deployment
@@ -96,13 +98,23 @@ public class RecipeLogicTest {
     
     private void clearData() {
         em.createQuery("delete from RecipeEntity").executeUpdate();
+        em.createQuery("delete from IngredienteEntity").executeUpdate();
+        
     }
 
     private void insertData() {
         for (int i = 0; i < 3; i++) {
-            RecipeEntity receta = factory.manufacturePojo(RecipeEntity.class);
-            em.persist(receta);
-            data.add(receta);
+            IngredienteEntity  iing = factory.manufacturePojo(IngredienteEntity.class);
+            em.persist(iing);
+            ingData.add(iing);
+        }
+        for (int i = 0; i < 3; i++) {
+            RecipeEntity entity = factory.manufacturePojo(RecipeEntity.class);
+            em.persist(entity);
+            data.add(entity);
+            if (i == 0) {
+                ingData.get(i).setReceta(entity);
+            }
         }
         
         
@@ -138,6 +150,13 @@ public class RecipeLogicTest {
     public void createRecipeTestConNombreInvalido3() throws BusinessLogicException {
         RecipeEntity newEntity = factory.manufacturePojo(RecipeEntity.class);
         newEntity.setName("asdfghjkljhgftykhjbjnkgdnklndklkjjnvglfasdfghjkljhgftykhjbjnkgdnklndklkjjnvglfdznkasdfghjkljhgftykhjbjnkgdnklndklkjjnvglfdznkasdfghjkljhgftykhjbjnkgdnklndklkjjnvglfdznkasdfghjkljhgftykhjbjnkgdnklndklkjjnvglfdznkasdfghjkljhgftykhjbjnkgdnklndklkjjnvglfdznkdznk");
+        recipeLogic.createRecipe(newEntity);
+    }
+    
+    @Test(expected = BusinessLogicException.class)
+    public void createRecipeTestSinRecetas() throws BusinessLogicException {
+        RecipeEntity newEntity = factory.manufacturePojo(RecipeEntity.class);
+        newEntity.setIngredientes(new ArrayList<IngredienteEntity>());
         recipeLogic.createRecipe(newEntity);
     }
     

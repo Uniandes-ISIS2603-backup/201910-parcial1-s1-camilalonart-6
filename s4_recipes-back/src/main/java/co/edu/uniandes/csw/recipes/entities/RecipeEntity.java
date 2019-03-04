@@ -5,7 +5,11 @@
  */
 package co.edu.uniandes.csw.recipes.entities;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import uk.co.jemos.podam.common.PodamExclude;
 
 /**
  *
@@ -16,8 +20,20 @@ public class RecipeEntity extends BaseEntity {
     private String name;
     private String description;
     
+    @PodamExclude
+    @OneToMany(mappedBy = "recipe")
+    private List<IngredienteEntity> ingredientes = new ArrayList<IngredienteEntity>();
+            
     public RecipeEntity(){
     
+    }
+
+    public List<IngredienteEntity> getIngredientes() {
+        return ingredientes;
+    }
+
+    public void setIngredientes(List<IngredienteEntity> ingredientes) {
+        this.ingredientes = ingredientes;
     }
     /**
      * @return the name

@@ -5,6 +5,7 @@
  */
 package co.edu.uniandes.csw.recipes.dtos;
 
+import co.edu.uniandes.csw.recipes.entities.IngredienteEntity;
 import co.edu.uniandes.csw.recipes.entities.RecipeEntity;
 
 /**
@@ -13,67 +14,51 @@ import co.edu.uniandes.csw.recipes.entities.RecipeEntity;
  */
 public class IngredientDTO {
     
-    private String name;
-    private String description;
+    private String nombre;
+    private Long calorias;
     private Long id;
     
     public IngredientDTO(){
     
     }
 
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
+    public String getNombre() {
+        return nombre;
     }
 
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    /**
-     * @return the description
-     */
-    public String getDescription() {
-        return description;
+    public Long getCalorias() {
+        return calorias;
     }
 
-    /**
-     * @param description the description to set
-     */
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCalorias(Long calorias) {
+        this.calorias = calorias;
     }
 
-    /**
-     * @return the id
-     */
     public Long getId() {
         return id;
     }
 
-    /**
-     * @param id the id to set
-     */
     public void setId(Long id) {
         this.id = id;
     }
+
     
-    public IngredientDTO(RecipeEntity recipe) {
-        this.id = recipe.getId();
-        this.name = recipe.getName();
-        this.description = recipe.getDescription();
+    
+    public IngredientDTO(IngredienteEntity entity) {
+        this.id = entity.getId();
+        this.nombre = entity.getNombre();
+        this.calorias = entity.getCalorias();
     }
     
-    public RecipeEntity toEntity() {
-        RecipeEntity entity = new RecipeEntity();
+    public IngredienteEntity toEntity() {
+        IngredienteEntity entity = new IngredienteEntity();
         entity.setId(this.id);
-        entity.setName(this.name);    
-        entity.setDescription(this.description);
+        entity.setNombre(this.nombre);    
+        entity.setCalorias(this.calorias);
         return entity;
     }
     
